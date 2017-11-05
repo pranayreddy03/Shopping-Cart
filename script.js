@@ -19,6 +19,7 @@ function addItemToCart(name, author, year, rating, price, count)
     }
     var i = new Item(name, author, year, rating, price, count);
     cart.push(i);
+    saveCart();
 }
 function removeItemFromCart(name)
 {
@@ -33,8 +34,8 @@ function removeItemFromCart(name)
             }
         }
     }
+    saveCart();
 }
-
 function removeItemFromCartAll(name)
 {
     for(var j in cart)
@@ -45,13 +46,13 @@ function removeItemFromCartAll(name)
             break;
         }
     }
+    saveCart();
 }
-
 function clearCart()
 {
     cart.splice(0,cart.length);
+    saveCart();
 }
-
 function countCart() {
  var totalCount = 0;
     for(var j in cart)
@@ -60,7 +61,6 @@ function countCart() {
  }
  return totalCount;
 }
-
 function totalCart() {
     var totalCount = 0;
     for(var j in cart)
@@ -69,18 +69,26 @@ function totalCart() {
     }
     return totalCount;
 }
-
 function listCart()
 {
-
+    var cartCopy = [];
+    for(var j in cart)
+    {
+        var item = cart[j];
+        var itemCopy = {};
+        for(var p in item)
+        {
+            itemCopy[p] = item[p];
+        }
+        cartCopy.push(itemCopy);
+    }
+    return cartCopy;
 }
-
-console.log(cart);
-addItemToCart('dsc','rfv',3,5,6,7);
-addItemToCart('dsced','rfvt5ged',34,57,60,74);
-addItemToCart('dscww','rfset5gv',36,54,62,71);
-addItemToCart('apple','rvcdvfv',36,54,62,71);
-// removeItemFromCartAll('apple');
-// clearCart();
-console.log(totalCart());
-
+function saveCart()
+{
+    localStorage.setItem('shoppingCart',JSON.stringify(cart));
+}
+function loadCart()
+{
+    JSON.parse(localStorage.getItem('shoppingCart'));
+}
